@@ -22,11 +22,19 @@
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
+    "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.15",
     "@nestjs/platform-express": "^7.6.15",
+    "@nestjs/typeorm": "^7.1.5",
+    "hbs": "^4.1.1",
+    "mysql2": "^2.2.5",
+    "node-sass-middleware": "^0.11.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6"
+    "rxjs": "^6.6.6",
+    "sass": "^1.32.8",
+    "sqlite3": "^5.0.2",
+    "typeorm": "^0.2.32"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.6.0",
