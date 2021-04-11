@@ -23,10 +23,4 @@ export class AppController {
     .getRawOne();
     return {nStations: result.sum, avgDistanceFromStation: 10, maxDistanceFromStation: 20};
   }
-
-  @Get('')
-  @Render('index')
-  public getIndex() {
-    return {};
-  }
 }
