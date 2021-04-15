@@ -19,8 +19,10 @@ export class AppController {
   public async getStats() {
     const result = await getConnection().getRepository(CityHallStats)
     .createQueryBuilder('cityHall')
-    .select('SUM(cityHall.nStations)', 'sum')
+    .addSelect('SUM(cityHall.nStations)', 'sum')
+        .addSelect('MAX(cityHall.maxDistanceFromStation)', 'max')
+        .addSelect('AVG(cityHall.avgDistanceFromStation)', 'avg')
     .getRawOne();
-    return {nStations: result.sum, avgDistanceFromStation: 10, maxDistanceFromStation: 20};
+    return {nStations: Number(result.sum).toFixed(0), avgDistanceFromStation: Number(result.avg).toFixed(2), maxDistanceFromStation: Number(result.max).toFixed(2)};
   }
 }

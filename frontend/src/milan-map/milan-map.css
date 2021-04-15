@@ -1,6 +1,6 @@
 .selected {
     fill:green;
-    animation: zoominoutsinglefeatured 500ms forwards;
+    animation: zoominoutsinglefeatured 300ms forwards;
     z-index: 1;
 }
 @keyframes zoominoutsinglefeatured {
@@ -8,7 +8,7 @@
         transform: scale(1,1);
     }
     50% {
-        transform: scale(1.05,1.05);
+        transform: scale(1,1.05);
     }
     100% {
         transform: scale(1,1);

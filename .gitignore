@@ -59,3 +59,4 @@ backend/!.vscode/tasks.json
 backend/!.vscode/launch.json
 backend/!.vscode/extensions.json
 backend/db
+.idea/
