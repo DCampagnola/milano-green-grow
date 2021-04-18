@@ -30,6 +30,7 @@
     "hbs": "^4.1.1",
     "mysql2": "^2.2.5",
     "node-sass-middleware": "^0.11.0",
+    "psql": "0.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
