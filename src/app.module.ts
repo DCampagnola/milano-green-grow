@@ -16,6 +16,8 @@ import { TaskServiceService } from './task-service/task-service.service';
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE || 'db',
             entities: ['dist/**/*.entity{.ts,.js}'],
+            migrations: ['dist/**/migrations/*{.ts,.js}'],
+            migrationsRun: true,
             synchronize: true,
             logging: true,
         }),
