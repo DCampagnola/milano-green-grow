@@ -1,8 +1,9 @@
-import {Controller, Get, Render} from '@nestjs/common';
+import { Controller, Get, Param, Query, Render } from "@nestjs/common";
 import {getConnection} from 'typeorm';
 import {AppService} from './app.service';
 import CityHallStats from './models/city-hall-stats.entity';
 import {TaskServiceService} from './task-service/task-service.service';
+import CityHallStatsHistory from "./models/city-hall-stats-history.entity";
 
 @Controller()
 export class AppController {
@@ -31,6 +32,33 @@ export class AppController {
             avgDistanceFromStation: Number(result.avg).toFixed(2),
             maxDistanceFromStation: Number(result.max).toFixed(2)
         };
+    }
+
+    @Get('history')
+    public async getHistory(@Query('townHall') townHallID?: number) {
+        if(townHallID) {
+            return await CityHallStatsHistory.find({
+                where: {
+                    cityHallID: townHallID
+                }
+            })
+        } else {
+            return (await getConnection().getRepository(CityHallStatsHistory)
+              .createQueryBuilder('cityHallStatsHistory')
+              .addSelect('cityHallStatsHistory.createdAt', 'createdAt')
+              .addSelect('SUM(cityHallStatsHistory.nStations)', 'nStations')
+              .addSelect('MAX(cityHallStatsHistory.maxDistanceFromStation)', 'maxDistanceFromStation')
+              .addSelect('AVG(cityHallStatsHistory.avgDistanceFromStation)', 'avgDistanceFromStation')
+              .groupBy('cityHallStatsHistory.createdAt')
+              .getRawMany()).map(
+                value => {
+                    return {
+                        ...value,
+                        createdAt: new Date(value.createdAt)
+                    }
+                }
+            );
+        }
     }
 
     @Get('run-task')

@@ -5,6 +5,7 @@ import CityHall from "../models/city-hall.entity";
 import { getConnection } from "typeorm";
 import { stat } from "fs";
 import { max } from "rxjs/operators";
+import CityHallStatsHistory from "../models/city-hall-stats-history.entity";
 
 interface ColonnineResponse {
   id: number;
@@ -60,6 +61,25 @@ export class TaskServiceService {
     await this.createTownHallStats(townHalls, stations);
     this.logger.debug("Applied transaction");
     await this.setCityHallStats(stations, townHalls);
+    this.logger.debug("Making history");
+    await this.createCityHallStatsHistory();
+    this.logger.debug("Done");
+  }
+
+  private async createCityHallStatsHistory() {
+    await getConnection().transaction(async entityManager => {
+      const creationDate = new Date();
+      const cityStats = await entityManager.getRepository<CityHallStats>(CityHallStats).find();
+      for (const cityStat of cityStats) {
+        const cityHistoryStat = new CityHallStatsHistory();
+        cityHistoryStat.cityHallID = cityStat.cityHallID;
+        cityHistoryStat.avgDistanceFromStation = cityStat.avgDistanceFromStation;
+        cityHistoryStat.maxDistanceFromStation = cityStat.maxDistanceFromStation;
+        cityHistoryStat.nStations = cityStat.nStations;
+        cityHistoryStat.createdAt = creationDate;
+        await entityManager.getRepository<CityHallStatsHistory>(CityHallStatsHistory).save(cityHistoryStat);
+      }
+    });
   }
 
   private async setCityHallStats(stations: ColonnineResponse[], townHalls: { "1": CityHall; "2": CityHall; "3": CityHall; "4": CityHall; "5": CityHall; "6": CityHall; "7": CityHall; "8": CityHall; "9": CityHall }) {
@@ -218,9 +238,9 @@ export class TaskServiceService {
         const avgDistance = sumDistances / n;
         const townHall: CityHall = townHalls[townHallIndex + ""];
         const cityHallStats = await entityManager.getRepository<CityHallStats>(CityHallStats).findOne({
-           where: {
-             cityHallID: townHallIndex
-           }
+          where: {
+            cityHallID: townHallIndex
+          }
         });
         cityHallStats.maxDistanceFromStation = maxDistance;
         cityHallStats.avgDistanceFromStation = avgDistance;
