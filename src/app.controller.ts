@@ -5,7 +5,7 @@ import CityHallStats from "./models/city-hall-stats.entity";
 import { TaskServiceService } from "./task-service/task-service.service";
 import CityHallStatsHistory from "./models/city-hall-stats-history.entity";
 
-@Controller("api")
+@Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
