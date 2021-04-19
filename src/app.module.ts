@@ -9,7 +9,7 @@ const otherOpts: any = {
 }
 console.log("DBCERT", process.env.DB_CERT)
 if(process.env.DB_CERT) {
-  otherOpts.cert = {
+  otherOpts.ssl = {
     rejectUnauthorized: true,
     ca: process.env.DB_CERT
   }
