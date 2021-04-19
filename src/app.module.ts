@@ -7,7 +7,6 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { TaskServiceService } from "./task-service/task-service.service";
 const otherOpts: any = {
 }
-console.log("DBCERT", process.env.DB_CERT)
 if(process.env.DB_CERT) {
   otherOpts.ssl = {
     rejectUnauthorized: true,
