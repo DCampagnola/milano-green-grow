@@ -12,10 +12,16 @@ export default class CityHallStatsHistory extends BaseEntity {
     @Column()
     nStations: number;
 
-    @Column()
+    @Column({
+        type: 'real',
+        default: 0,
+    })
     maxDistanceFromStation: number;
 
-    @Column()
+    @Column({
+        type: 'real',
+        default: 0,
+    })
     avgDistanceFromStation: number;
 
     @OneToOne(() => CityHall)

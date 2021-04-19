@@ -3,17 +3,23 @@ import CityHall from "./city-hall.entity";
 
 @Entity()
 export default class CityHallStats extends BaseEntity {
-    
+
     @PrimaryColumn()
     cityHallID: number;
 
     @Column()
     nStations: number;
 
-    @Column()
+    @Column({
+        type: 'real',
+        default: 0,
+    })
     maxDistanceFromStation: number;
 
-    @Column()
+    @Column({
+        type: 'real',
+        default: 0,
+    })
     avgDistanceFromStation: number;
 
     @OneToOne(() => CityHall)

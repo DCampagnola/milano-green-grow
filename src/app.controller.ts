@@ -25,7 +25,7 @@ export class AppController {
     const result = await getConnection()
       .getRepository(CityHallStats)
       .createQueryBuilder("cityHall")
-      .addSelect("SUM(cityHall.nStations)", "sum")
+      .select("SUM(cityHall.nStations)", "sum")
       .addSelect("MAX(cityHall.maxDistanceFromStation)", "max")
       .addSelect("AVG(cityHall.avgDistanceFromStation)", "avg")
       .getRawOne();
@@ -49,7 +49,7 @@ export class AppController {
         await getConnection()
           .getRepository(CityHallStatsHistory)
           .createQueryBuilder("cityHallStatsHistory")
-          .addSelect("cityHallStatsHistory.createdAt", "createdAt")
+          .select("cityHallStatsHistory.createdAt", "createdAt")
           .addSelect("SUM(cityHallStatsHistory.nStations)", "nStations")
           .addSelect(
             "MAX(cityHallStatsHistory.maxDistanceFromStation)",
@@ -59,7 +59,7 @@ export class AppController {
             "AVG(cityHallStatsHistory.avgDistanceFromStation)",
             "avgDistanceFromStation"
           )
-          .groupBy("cityHallStatsHistory.createdAt")
+          .addGroupBy("cityHallStatsHistory.createdAt")
           .getRawMany()
       ).map((value) => {
         return {
