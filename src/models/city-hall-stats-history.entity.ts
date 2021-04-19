@@ -3,7 +3,7 @@ import CityHall from "./city-hall.entity";
 
 @Entity()
 export default class CityHallStatsHistory extends BaseEntity {
-    @PrimaryColumn("datetime")
+    @PrimaryColumn()
     createdAt: Date;
 
     @PrimaryColumn()
