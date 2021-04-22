@@ -1,12 +1,19 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import CityHall from "./city-hall.entity";
 
 @Entity()
 export default class CityHallStatsHistory extends BaseEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @PrimaryColumn({
+        primary: true
+    })
     createdAt: Date;
 
-    @PrimaryColumn()
+    @PrimaryColumn({
+        primary: true
+    })
     cityHallID: number;
 
     @Column()
