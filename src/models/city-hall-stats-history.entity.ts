@@ -6,7 +6,9 @@ export default class CityHallStatsHistory extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        type: 'date'
+    })
     createdAt: Date;
 
     @Column()
