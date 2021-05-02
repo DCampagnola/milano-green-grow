@@ -60,6 +60,7 @@ export class AppController {
             "avgDistanceFromStation"
           )
           .addGroupBy("cityHallStatsHistory.createdAt")
+          .addOrderBy("cityHallStatsHistory.createdAt", "ASC")
           .getRawMany()
       ).map((value) => {
         return {
