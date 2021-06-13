@@ -4,6 +4,7 @@ import { AppService } from "./app.service";
 import CityHallStats from "./models/city-hall-stats.entity";
 import { TaskServiceService } from "./task-service/task-service.service";
 import CityHallStatsHistory from "./models/city-hall-stats-history.entity";
+import { ProviderStatsEntity } from "./models/provider-stats.entity";
 
 @Controller()
 export class AppController {
@@ -74,5 +75,10 @@ export class AppController {
   @Get("run-task")
   public async runTask() {
     await this.taskService.syncService();
+  }
+
+  @Get("providers")
+  public async getProviderStats() {
+    return ProviderStatsEntity.find();
   }
 }

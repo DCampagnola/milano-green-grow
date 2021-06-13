@@ -6,6 +6,7 @@ import { getConnection } from "typeorm";
 import { stat } from "fs";
 import { max } from "rxjs/operators";
 import CityHallStatsHistory from "../models/city-hall-stats-history.entity";
+import { ProviderStatsEntity } from "../models/provider-stats.entity";
 
 interface ColonnineResponse {
   id: number;
@@ -63,7 +64,33 @@ export class TaskServiceService {
     await this.setCityHallStats(stations, townHalls);
     this.logger.debug("Making history");
     await this.createCityHallStatsHistory();
+    this.logger.debug("Provider Stats");
+    await this.createProviderStats(stations);
     this.logger.debug("Done");
+  }
+
+  private async createProviderStats(stations: ColonnineResponse[]) {
+    const connection = getConnection();
+    await connection.transaction(async (entityManager) => {
+      await entityManager.remove<ProviderStatsEntity>(
+        await ProviderStatsEntity.find()
+      );
+      const providersToAdd: ProviderStatsEntity[] = [];
+      const getByName = (providerName) => (provider: ProviderStatsEntity) => provider.providerName === providerName;
+      for (const station of stations) {
+        let provider: ProviderStatsEntity = providersToAdd.filter(
+          getByName(station.titolare)
+        )[0];
+        if (!provider) {
+          provider = new ProviderStatsEntity();
+          provider.providerName = station.titolare;
+          provider.nStations = 0;
+          providersToAdd.push(provider);
+        }
+        provider.nStations += 1;
+      }
+      await Promise.all(providersToAdd.map((value) => value.save()));
+    });
   }
 
   private async createCityHallStatsHistory() {
